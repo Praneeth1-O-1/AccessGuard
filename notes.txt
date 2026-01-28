@@ -1,0 +1,11 @@
+Student Account:
+  Username: john_student
+  Password: Student@123
+
+Faculty Account:
+  Username: prof_anderson
+  Password: Faculty@123
+
+Admin Account:
+  Username: admin_wilson
+  Password: Admin@123

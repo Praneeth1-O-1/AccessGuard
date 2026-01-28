@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>AccessGuard • Secure Login</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      height: 100vh;
+      background: #f6f7f9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #111827;
+    }
+
+    .auth-card {
+      width: 360px;
+      background: #ffffff;
+      padding: 32px;
+      border-radius: 12px;
+      border: 1px solid #e5e7eb;
+    }
+
+    h1 {
+      font-size: 22px;
+      margin-bottom: 6px;
+    }
+
+    .subtitle {
+      font-size: 14px;
+      color: #6b7280;
+      margin-bottom: 24px;
+    }
+
+    label {
+      font-size: 13px;
+      font-weight: 500;
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: 1px solid #d1d5db;
+      margin-bottom: 16px;
+      font-size: 14px;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: #111827;
+    }
+
+    button {
+      width: 100%;
+      padding: 11px;
+      border-radius: 8px;
+      border: none;
+      background: #111827;
+      color: white;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+    }
+
+    button:hover {
+      opacity: 0.9;
+    }
+
+    #otpStep {
+      display: none;
+    }
+
+    #authError {
+      margin-top: 12px;
+      font-size: 13px;
+      color: #dc2626;
+      display: none;
+    }
+
+    .footer {
+      margin-top: 24px;
+      font-size: 12px;
+      color: #9ca3af;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="auth-card">
+    <h1>AccessGuard</h1>
+    <div class="subtitle">Secure access with multi-factor authentication</div>
+
+    <!-- Password Step -->
+    <form id="passwordStep" onsubmit="handlePasswordLogin(event)">
+      <label>Username</label>
+      <input id="username" required />
+
+      <label>Password</label>
+      <input id="password" type="password" required />
+
+      <button type="submit">Continue</button>
+    </form>
+
+    <!-- OTP Step -->
+    <form id="otpStep" onsubmit="handleOTPVerification(event)">
+      <input type="hidden" id="userId" />
+
+      <label>One-Time Password</label>
+      <input id="otp" placeholder="6-digit code" required />
+
+      <button type="submit">Verify</button>
+    </form>
+
+    <div id="authError"></div>
+
+    <div class="footer">
+      Protected by AccessGuard Security
+    </div>
+  </div>
+
+  <script src="/js/auth.js"></script>
+</body>
+</html>

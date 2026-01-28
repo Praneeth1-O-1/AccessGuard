@@ -1,0 +1,293 @@
+Project: AccessGuard – Secure Resource Access Management System
+1️⃣ AUTHENTICATION – 3 MARKS
+✅ 1.1 Single-Factor Authentication (1.5 Marks)
+
+What is implemented:
+
+Username + password-based login
+
+Passwords stored securely using hashing (bcrypt)
+
+Code Evidence:
+
+routes/auth.js
+
+utils/hashing.js
+
+bcrypt.compare(password, password_hash)
+
+Explanation (exam-ready):
+
+The system implements single-factor authentication using username and password. User credentials are verified against securely stored password hashes, ensuring confidentiality and resistance to credential theft.
+
+✔ Marks secured: 1.5 / 1.5
+
+✅ 1.2 Multi-Factor Authentication (1.5 Marks)
+
+What is implemented:
+
+Password (knowledge factor)
+
+OTP (possession factor, time-based)
+
+Code Evidence:
+
+utils/otp.js
+
+createOTP(), verifyOTP()
+
+OTP expiration (5 minutes)
+
+OTP marked as “used” after verification
+
+Standards Alignment:
+
+Follows NIST SP 800-63-2 E-Authentication Architecture
+
+Explanation:
+
+After password verification, the system enforces a second authentication factor using a time-bound OTP, thereby preventing unauthorized access even if credentials are compromised.
+
+✔ Marks secured: 1.5 / 1.5
+
+✅ Authentication Total: 3 / 3
+
+2️⃣ AUTHORIZATION – ACCESS CONTROL – 3 MARKS
+✅ 2.1 Access Control Model (ACL) (1.5 Marks)
+
+Model Used:
+
+Access Control List (ACL)
+
+Subjects (Users):
+
+Student
+
+Faculty
+
+Admin
+
+Objects (Resources):
+
+Booking requests
+
+Approval actions
+
+Access tokens
+
+Code Evidence:
+
+utils/acl.js
+
+Role checks in routes and dashboard logic
+
+Explanation:
+
+The application implements an Access Control List (ACL) where permissions are assigned based on user roles, ensuring controlled access to system resources.
+
+✔ Marks secured: 1.5 / 1.5
+
+✅ 2.2 Policy Definition & Enforcement (1.5 Marks)
+
+Policy Definition:
+
+Role	Permissions
+Student	Create booking requests
+Faculty	Recommend booking requests
+Admin	Approve / Reject bookings, issue tokens
+
+Enforcement:
+
+Programmatic checks in:
+
+routes/bookings.js
+
+routes/resources.js
+
+dashboard.js
+
+Explanation:
+
+Authorization rules are enforced programmatically, preventing users from performing actions outside their assigned role, thereby maintaining least-privilege access.
+
+✔ Marks secured: 1.5 / 1.5
+
+✅ Authorization Total: 3 / 3
+
+3️⃣ ENCRYPTION – 3 MARKS
+✅ 3.1 Key Exchange / Key Generation (1.5 Marks)
+
+What is implemented:
+
+Secure key generation using Node.js crypto
+
+RSA key pair generation
+
+AES symmetric key generation
+
+Code Evidence:
+
+utils/encryption.js
+
+utils/digitalSignature.js
+
+Explanation:
+
+The system securely generates cryptographic keys using industry-standard cryptographic libraries, ensuring confidentiality during data exchange.
+
+✔ Marks secured: 1.5 / 1.5
+
+✅ 3.2 Encryption & Decryption (1.5 Marks)
+
+Technique Used:
+
+Hybrid Encryption
+
+AES-256 for data encryption
+
+RSA for key protection
+
+Code Evidence:
+
+Encrypted booking data
+
+Secure token generation
+
+Explanation:
+
+A hybrid encryption approach is used to balance performance and security, combining the speed of symmetric encryption with the security of asymmetric encryption.
+
+✔ Marks secured: 1.5 / 1.5
+
+✅ Encryption Total: 3 / 3
+
+4️⃣ HASHING & DIGITAL SIGNATURE – 3 MARKS
+✅ 4.1 Hashing with Salt (1.5 Marks)
+
+What is implemented:
+
+Password hashing using bcrypt
+
+Automatic salting
+
+Code Evidence:
+
+utils/hashing.js
+
+bcrypt.hash()
+
+Explanation:
+
+Passwords are never stored in plaintext. Instead, salted hashing is used to prevent rainbow table and brute-force attacks.
+
+✔ Marks secured: 1.5 / 1.5
+
+✅ 4.2 Digital Signature using Hash (1.5 Marks)
+
+What is implemented:
+
+SHA-256 hashing
+
+RSA digital signature
+
+Signature verification via token
+
+Code Evidence:
+
+utils/digitalSignature.js
+
+Displayed in dashboard (Hash + Signature)
+
+Explanation:
+
+Digital signatures ensure data integrity and authenticity, guaranteeing that approved access tokens cannot be tampered with.
+
+✔ Marks secured: 1.5 / 1.5
+
+✅ Hashing & Signature Total: 3 / 3
+
+5️⃣ ENCODING TECHNIQUES – 3 MARKS
+✅ 5.1 Encoding & Decoding (1 Mark)
+
+What is implemented:
+
+Base64 encoding of access tokens
+
+QR Code generation for token distribution
+
+Code Evidence:
+
+utils/encoding.js
+
+QR code displayed in dashboard
+
+Explanation:
+
+Encoded tokens allow safe transmission and compact representation, especially for physical or scanned verification.
+
+✔ Marks secured: 1 / 1
+
+✅ 5.2 Security Levels & Risks (Theory) (1 Mark)
+
+Covered Risks:
+
+Credential theft
+
+Replay attacks
+
+Unauthorized access
+
+Data tampering
+
+Mitigations:
+
+MFA
+
+Time-bound OTP
+
+Digital signatures
+
+Role-based access
+
+✔ Marks secured: 1 / 1
+
+✅ 5.3 Possible Attacks (Theory) (1 Mark)
+
+Attacks Addressed:
+
+Brute force → bcrypt
+
+Session hijacking → secure session IDs
+
+Man-in-the-middle → encryption
+
+Replay attacks → OTP expiry
+
+✔ Marks secured: 1 / 1
+
+✅ Encoding & Theory Total: 3 / 3
+
+6️⃣ VIVA / PARTICIPATION – 5 MARKS
+✅ Viva Readiness (5 Marks)
+
+Your project demonstrates:
+
+Conceptual clarity
+
+Real-world security design
+
+Correct terminology
+
+Industry-aligned implementation
+
+You can confidently explain:
+
+NIST authentication flow
+
+ACL vs RBAC
+
+Hybrid encryption
+
+Token-based access
+
+✔ Expected: Full marks

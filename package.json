@@ -1,0 +1,25 @@
+{
+  "name": "accessguard",
+  "version": "1.0.0",
+  "description": "Secure Campus Resource Booking System",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "init-db": "node utils/initDatabase.js"
+  },
+  "keywords": ["security", "authentication", "authorization", "encryption"],
+  "author": "Your Name",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "pg": "^8.11.3",
+    "bcrypt": "^5.1.1",
+    "cookie-parser": "^1.4.6",
+    "qrcode": "^1.5.3",
+    "crypto": "^1.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}

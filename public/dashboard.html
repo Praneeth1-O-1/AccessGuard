@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>AccessGuard • Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background: #f6f7f9;
+      color: #111827;
+    }
+
+    /* ---------- HEADER ---------- */
+    header {
+      background: #ffffff;
+      border-bottom: 1px solid #e5e7eb;
+      padding: 16px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    #userInfo {
+      font-size: 15px;
+      font-weight: 500;
+    }
+
+    .logout-btn {
+      border: 1px solid #d1d5db;
+      background: transparent;
+      padding: 6px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    /* ---------- LAYOUT ---------- */
+    main {
+      max-width: 1100px;
+      margin: auto;
+      padding: 32px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 24px;
+      border: 1px solid #e5e7eb;
+      margin-bottom: 24px;
+    }
+
+    h2 {
+      margin-bottom: 16px;
+      font-size: 18px;
+    }
+
+    /* ---------- BUTTONS ---------- */
+    .btn-primary {
+      background: #111827;
+      color: white;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 13px;
+    }
+
+    .btn-secondary {
+      background: transparent;
+      border: 1px solid #d1d5db;
+      padding: 8px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 13px;
+    }
+
+    /* ---------- MODALS ---------- */
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.4);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+
+    .modal-card {
+      background: white;
+      padding: 24px;
+      border-radius: 12px;
+      width: 420px;
+      border: 1px solid #e5e7eb;
+    }
+
+    textarea, input {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #d1d5db;
+      margin-top: 6px;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    pre {
+    white-space: pre-wrap;
+    word-break: break-all;
+    font-size: 12px;
+    background: #f9fafb;
+    padding: 8px;
+    border-radius: 6px;
+    }
+
+  </style>
+</head>
+
+<body>
+
+<header>
+  <div id="userInfo">Dashboard</div>
+  <button class="logout-btn" onclick="logout()">Logout</button>
+</header>
+
+<main>
+
+  <!-- STUDENT -->
+  <div id="studentView" style="display:none">
+    <div class="card">
+      <h2>My Bookings</h2>
+      <button class="btn-primary" onclick="showCreateBooking()">Create Booking</button>
+      <div id="bookingsList"></div>
+    </div>
+  </div>
+
+  <!-- FACULTY -->
+  <div id="facultyView" style="display:none">
+    <div class="card">
+      <h2>Faculty Recommendations</h2>
+      <div id="facultyBookingsList"></div>
+    </div>
+  </div>
+
+  <!-- ADMIN -->
+  <div id="adminView" style="display:none">
+    <div class="card">
+      <h2>Admin Approvals</h2>
+      <div id="adminBookingsList"></div>
+    </div>
+  </div>
+
+</main>
+
+<!-- ================= MODALS ================= -->
+
+<!-- RECOMMEND MODAL -->
+<div id="recommendModal" class="modal">
+  <div class="modal-card">
+    <h3>Recommend Booking</h3>
+    <div id="recommendBookingDetails"></div>
+    <form onsubmit="handleRecommend(event)">
+      <input type="hidden" id="recommendBookingId">
+      <label>Recommendation</label>
+      <textarea id="recommendation" required></textarea>
+      <div class="modal-actions">
+        <button class="btn-primary" type="submit">Submit</button>
+        <button class="btn-secondary" type="button" onclick="closeRecommendModal()">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- APPROVE MODAL -->
+<div id="approveModal" class="modal">
+  <div class="modal-card">
+    <h3>Approve Booking</h3>
+    <div id="approveBookingDetails"></div>
+    <input type="hidden" id="approveBookingId">
+    <div class="modal-actions">
+      <button class="btn-primary" onclick="handleApprove()">Approve</button>
+      <button class="btn-secondary" onclick="closeApproveModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOKEN MODAL -->
+<div id="tokenModal" class="modal">
+  <div class="modal-card">
+    <h3>Access Token</h3>
+    <div id="qrCodeDisplay"></div>
+    <p><strong>Token</strong></p>
+    <pre id="base64Token"></pre>
+    <p><strong>Hash:</strong> <span id="signatureHash"></span></p>
+    <p><strong>Signature:</strong> <span id="signatureValue"></span></p>
+    <div class="modal-actions">
+      <button class="btn-primary" onclick="copyToken()">Copy</button>
+      <button class="btn-secondary" onclick="closeTokenModal()">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- CREATE BOOKING MODAL -->
+<div id="createBookingModal" class="modal">
+  <div class="modal-card">
+    <h3>Create Booking</h3>
+
+    <form onsubmit="handleCreateBooking(event)">
+      <label>Resource</label>
+      <select id="resourceId" required>
+        <option value="">Select resource</option>
+      </select>
+
+      <label>Date</label>
+      <input type="date" id="bookingDate" required>
+
+      <label>Start Time</label>
+      <input type="time" id="startTime" required>
+
+      <label>End Time</label>
+      <input type="time" id="endTime" required>
+
+      <label>Purpose</label>
+      <textarea id="purpose" required></textarea>
+
+      <div class="modal-actions">
+        <button class="btn-primary" type="submit">Submit</button>
+        <button class="btn-secondary" type="button" onclick="closeCreateBooking()">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+<script src="/js/dashboard.js"></script>
+</body>
+</html>
